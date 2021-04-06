@@ -1,0 +1,10 @@
+Course Code,Applicant Name,applicant email,"Applicant status ( 1- Fundable, 2-NotFundable,3-External)",5or10 hrs,Course Rank,Q1,A1,Q2,A2,Q3,A3,…,Qn,An,Instructor Preference
+SE123,Alice,alice@uwo.ca,1,5,1,Know Java?,yes,Know OOP?,No,Teaching Certificate?,yes,,,,2
+ECE456,Alice,alice@uwo.ca,1,5,2,Teaching Certificate?,yes ,Know DBMS?,no,,,,,,0
+ES678,Alice,alice@uwo.ca,1,5,3,Know Matlab?,yes,,,,,,,,1
+SE123,Bob,bob@uwo.ca,2,10,2,Know Java?,no,Know OOP?,yes,Teaching Certificate?,no,,,,1
+ECE456,Bob,bob@uwo.ca,2,10,1,Teaching Certificate?,no,Know DBMS?,no,,,,,,0
+SE123,Charles,charles@uwo.ca,3,10,1,Know Java?,yes,Know OOP?,no,Teaching Certificate?,yes,,,,2
+ECE456,Charles,charles@uwo.ca,3,10,2,Teaching Certificate?,yes,Know DBMS?,yes,,,,,,2
+ECE456,Derek,derek@uwo.ca,2,5,1,Teaching Certificate?,no,Know DBMS?,no,,,,,,0
+ES678,Derek,derek@uwo.ca,2,5,2,Know Matlab?,yes,,,,,,,,1
