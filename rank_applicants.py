@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, filedialog
+from tkinter import ttk, filedialog, messagebox
 import pandas as pd
 import numpy as np
 import re
@@ -54,9 +54,8 @@ def update_results():
                 complete=False
     
     if not complete:
-        alert=tk.Toplevel(view_app)
-        alert.geometry('400x50')
-        alertText=tk.Label(alert, text='Ranking of applicants is incomplete or duplicate of same rank selected').pack()
+        messagebox.showerror('Error', 'Ranking of applicants is incomplete or duplicate of same rank selected')
+
     else:
         row_index_list = [None]*len(name_list)
         course_filter = course_choice.get().split()[0]
@@ -64,7 +63,7 @@ def update_results():
             df_applicant.insert(6, "Instructor Rank", None)
         for x in range(len(name_list)):
             df_applicant["Instructor Rank"] = np.where((df_applicant['Applicant Name']==name_list[x])&(df_applicant['Course Code']==course_filter), combobox_list[x].get(), df_applicant["Instructor Rank"])
-        df_applicant.to_excel(r'./sample_output.xlsx', index=False)
+        df_applicant.to_excel('./sample_output.xlsx', index=False)
         
 
 
