@@ -141,7 +141,7 @@ def mainScreen():
     TAhours = tk.Button(frame, text="Match TAs to Courses", command=matchTAtoCourse)
     TAhours.place(relx=0.225, rely=0.5, relwidth=0.25, relheight=0.15)
 
-    TAallocations = tk.Button(frame, text="View/Edit TA Allocations"=editAllocations)
+    TAallocations = tk.Button(frame, text="View/Edit TA Allocations", command=editAllocations)
     TAallocations.place(relx=0.525, rely=0.5, relwidth=0.25, relheight=0.15)
 
     ms.mainloop()
