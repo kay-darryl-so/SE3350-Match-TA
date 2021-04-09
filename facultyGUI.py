@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog, ttk
 from readApplication import readApplicationFile
+from readApplication import getFile
 
 
 def uploadApplication():
@@ -13,6 +14,15 @@ def uploadApplication():
 
     fn = filedialog.askopenfilename(initialdir='/', title='Select File', filetypes=(('.csv', "*.csv"),('all files', '*.*')))
     app = readApplicationFile(fn)
+
+    newFile = "2020-2021 Applications.csv"
+    with open(newFile, 'w') as f:
+        f.write('Course Code,Applicant Name,applicant email,"Applicant status ( 1- Fundable, 2-NotFundable,3-External)",5or10 hrs,Course Rank,Q1,A1,Q2,A2,Q3,A3,…,Qn,An,Instructor Preference\n')
+        content = getFile(fn)
+        for i in content:
+            f.write(str(i))
+            f.write('\n')
+        f.close()
 
     tree = ttk.Treeview(frame)
     tree["columns"]=("Name","Email","Courses","Funding","Hours")
