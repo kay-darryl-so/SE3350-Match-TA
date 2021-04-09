@@ -4,12 +4,16 @@ import pandas as pd
 import numpy as np
 import re
 
-def file_open():
-    filename=filedialog.askopenfilename(
-        initialdir="./",
-        title="Open A File",
-        filetype=(("xlsx files", "*.xlsx"),("All Files", "*,*"))
-    )
+def file_open(name = None):
+    if name is None:
+        filename=filedialog.askopenfilename(
+            initialdir="./",
+            title="Open A File",
+            filetype=(("xlsx files", "*.xlsx"),("All Files", "*,*"))
+        )
+    else:
+        filename=name
+
     if filename:
         try:
             filename = r"{}".format(filename)
@@ -100,17 +104,23 @@ def update_applicant(event):
         display_tree(df_temp)
         rank_applicant(df_temp)
 
-def select_applicant_file():
+def select_applicant_file(fileName = None):
     global df_applicant
-    df_applicant = file_open()
+    if fileName is None:
+        df_applicant = file_open()
+    else:
+        df_applicant = file_open(fileName)
     clear_tree()
     course_filter = course_choice.get().split()[0]
     df_temp=df_applicant[df_applicant['Course Code']==course_filter]
     display_tree(df_temp)
     rank_applicant(df_temp)
 
-def select_course():
-    df_course = file_open()
+def select_course(fileName = None):
+    if fileName is None:
+        df_course = file_open()
+    else:
+        df_course = file_open(fileName)
     course_list =[]
     df_rows = df_course.to_numpy().tolist()
     for row in df_rows:
@@ -168,5 +178,8 @@ def view_applicant_interface():
 
     global results_btn
     results_btn=tk.Button(view_frame, text="Update Ranking", command=update_results)
+
+    select_course('CourseSetupSample.xlsx')
+    select_applicant_file('SampleApplicantInput_updated.xlsx')
 
     view_app.mainloop()
