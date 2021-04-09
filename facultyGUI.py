@@ -26,7 +26,7 @@ def uploadApplication():
 
     tree = ttk.Treeview(frame)
     tree["columns"]=("Name","Email","Courses","Funding","Hours")
-    tree.column("#0", width=0)
+    tree.column("#0", width=0, stretch=tk.NO)
     tree.column("Name", width=150, minwidth=150, stretch=tk.NO)
     tree.column("Email", width=150, minwidth=150, stretch=tk.NO)
     tree.column("Courses", width=250, minwidth=270, stretch=tk.NO)
