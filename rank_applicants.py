@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, filedialog
+from tkinter import ttk, filedialog, messagebox
 import pandas as pd
 import numpy as np
 import re
@@ -54,9 +54,8 @@ def update_results():
                 complete=False
     
     if not complete:
-        alert=tk.Toplevel(view_app)
-        alert.geometry('400x50')
-        alertText=tk.Label(alert, text='Ranking of applicants is incomplete or duplicate of same rank selected').pack()
+        messagebox.showerror('Error', 'Ranking of applicants is incomplete or duplicate of same rank selected')
+
     else:
         row_index_list = [None]*len(name_list)
         course_filter = course_choice.get().split()[0]
@@ -64,7 +63,8 @@ def update_results():
             df_applicant.insert(6, "Instructor Rank", None)
         for x in range(len(name_list)):
             df_applicant["Instructor Rank"] = np.where((df_applicant['Applicant Name']==name_list[x])&(df_applicant['Course Code']==course_filter), combobox_list[x].get(), df_applicant["Instructor Rank"])
-        df_applicant.to_excel(r'./sample_output.xlsx', index=False)
+        df_applicant.to_csv('./InstructorRanking.csv', index=False)
+        messagebox.showinfo('Update Success', f'Ranking of Applicants for course {course_choice.get()} is successfully saved')
         
 
 
@@ -80,13 +80,13 @@ def rank_applicant(dataframe):
     count=0
     for student in student_data:
         name_list[count] = student[1]
-        tk.Label(rank_frame, text=student[1]).grid(column=0, row=count)
+        tk.Label(rank_frame, text=student[1], bg='#f3e6ff', font='bold').grid(column=0, row=count)
         temp_list=np.arange(start=1, stop=len(student_data)+1).tolist()
         combobox_list[count] = ttk.Combobox(rank_frame, value=temp_list, state='readonly')
         combobox_list[count].grid(column=1, row=count)
         count+=1
     
-    results_btn.pack(padx=10, pady=10, side='bottom')
+    results_btn.pack(padx=10,pady=10, ipadx=30, ipady=15, side='bottom')
 
 
 def update_applicant(event):
@@ -125,27 +125,31 @@ def select_course():
     course_choice.configure(value=course_list)
     course_choice.current(0)
     course_choice.bind("<<ComboboxSelected>>", update_applicant)
-    course_choice.pack()
-    choose_applicant_btn.pack(padx=10,pady=10)    
+    course_choice.pack(padx=10,pady=10, ipadx=10, ipady=5)
+    choose_applicant_btn.pack(padx=10,pady=10, ipadx=30, ipady=15)    
 
 def view_applicant_interface():
-    global view_app
+    view_app = tk.Tk()
+    view_app.title('TA-Course Matching System')
+    view_app.geometry('1000x900')
 
-    view_app = tk.Toplevel(root)
-    view_app.minsize(300, 100)
-    view_app.maxsize(1200,700)
-    view_app.title('View Applicants')
+    view_canvas = tk.Canvas(view_app, bg="#ffffff")
+    view_canvas.pack(fill='both', expand='yes')
+
+    view_frame = tk.Frame(view_canvas, bg='#f3e6ff')
+    view_frame.pack(fill='both', expand='yes', padx = 80, pady=80)
 
     global choose_course_frame
-    choose_course_frame = tk.Frame(view_app)
+    choose_course_frame = tk.Frame(view_frame, bg='#f3e6ff')
     choose_course_frame.pack(side='top', padx=10,pady=10)
 
-    choose_course_btn= tk.Button(choose_course_frame,text="Choose Course File", command=select_course).pack(padx=10,pady=10)
+    choose_course_btn= tk.Button(choose_course_frame,text="Choose Course File", command=select_course)
+    choose_course_btn.pack(padx=10,pady=10, ipadx=30, ipady=15)
     
     global course_choice
     course_choice = ttk.Combobox(choose_course_frame, state='readonly')
 
-    applicant_display = tk.Frame(view_app)
+    applicant_display = tk.Frame(view_frame, bg='#f3e6ff')
     applicant_display.pack(side='top', padx=10,pady=10)
 
     global choose_applicant_btn
@@ -154,28 +158,25 @@ def view_applicant_interface():
     global data_tree
     data_tree = ttk.Treeview(applicant_display)
 
-    x_scrollbar = tk.Scrollbar(view_app, orient='horizontal', command=data_tree.xview)
+    x_scrollbar = tk.Scrollbar(view_frame, orient='horizontal', command=data_tree.xview)
     x_scrollbar.pack(side='bottom', fill='x')
     data_tree.configure(xscrollcommand=x_scrollbar.set)
 
     global rank_frame
-    rank_frame=tk.Frame(view_app)
+    rank_frame=tk.Frame(view_frame, bg='#f3e6ff')
     rank_frame.pack(side='top', padx=10, pady=10)
 
     global results_btn
-    results_btn=tk.Button(view_app, text="Update Ranking", command=update_results)
+    results_btn=tk.Button(view_frame, text="Update Ranking", command=update_results)
 
-def rank_applicant_root():
-    global root
-    root = tk.Tk()
-    root.title('Match TA')
-    root.minsize(250,80)
-    root_frame=tk.Frame(root)
-    root_frame.pack(padx=10, pady=10)
+    view_app.mainloop()
 
-    view_app_btn=tk.Button(root_frame, text="View Applicants", command=view_applicant_interface)
-    view_app_btn.pack(side='top', padx=10, pady=10)
-    root.mainloop()
-    array = np.array
-
-rank_applicant_root()
+view_applicant_interface()
+# output_df = pd.DataFrame(columns=['Name', 'Course', 'Instructor Ranking'])
+# output_df.loc[0] = ['one','two','three']
+# output_df.loc[1] = ['two','two','two']
+# if ((output_df['Name'] == 'three') & (output_df['Course']=='two')).any():
+#     print('True')
+# else:
+#     print('False')
+# print(output_df)
