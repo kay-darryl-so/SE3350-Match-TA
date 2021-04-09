@@ -13,7 +13,7 @@ def matchTAtoCourse():
     label1 = tk.Label(frame, text= 'Match Results', bg='#f3e6ff', font=('Calibri',18))
     label1.place(relx=0.12, rely=0.2, relwidth=0.8, relheight=0.1)
 
-    fn = filedialog.askopenfilename(initialdir='/', title='Select File', filetypes=(('.csv', "*.csv"),('all files', '*.*')))
+    fn = "InstructorRanking.csv"
     match = matchTA(fn)
 
     tree = ttk.Treeview(frame)
