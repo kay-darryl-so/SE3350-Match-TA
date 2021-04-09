@@ -9,7 +9,7 @@ def file_open(name = None):
         filename=filedialog.askopenfilename(
             initialdir="./",
             title="Open A File",
-            filetype=(("xlsx files", "*.xlsx"),("All Files", "*,*"))
+            filetypes=(("xlsx files", "*.xlsx"),("All Files", "*,*"))
         )
     else:
         filename=name
