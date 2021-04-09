@@ -12,15 +12,24 @@ def viewHours(filename):
         print("Sorry, the file {} does not exist".format(filename))
         quit()
 
-    global lists
-    lists = [list(row) for row in df.values]
+    try:
+        df = pd.read_csv(filename)
 
-    result = ''
+    except FileNotFoundError:
+        print("Sorry, the file {} does not exist".format(filename))
+        quit()
+
+    dict = df.to_dict(orient='list')
+
+    courseCode = dict['Course']
+    hours = dict['Hours']
+
+    result = []
 
     sum = -1
-    for i in lists:
+    for c in courseCode:
         sum += 1
-        result = result + str(lists[sum]) + '\n\n'
+        result.append((c, hours[sum]))
 
     return result
 

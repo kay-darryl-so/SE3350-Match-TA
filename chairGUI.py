@@ -52,16 +52,66 @@ def uploadFile():
         viewResults = viewResults + str(i) + '\n\n'
 
     heading = tk.Label(frame, text=menu.get() + ' Courses and Allocated TA Hours', bg='#f3e6ff', font=('Calibri',18))
-    heading.place(relx=0.12, rely=0.2, relwidth=0.8, relheight=0.1)
+    heading.place(relx=0.12, rely=0.1, relwidth=0.8, relheight=0.1)
 
-    results = tk.Label(frame, text=viewResults)
-    results.place(relx=0.1, rely=0.3, relwidth=0.8, relheight=0.45)
+    global tree
+    tree = ttk.Treeview(frame)
+    tree["columns"]=("Course","Hours")
+    tree.column("#0", width=0, stretch=tk.NO)
+    tree.column("Course", width=150, minwidth=150, stretch=tk.NO)
+    tree.column("Hours", width=250, minwidth=270, stretch=tk.NO)
 
-    editButton = tk.Button(frame, text='Edit Hours', command=editHoursInput)
-    editButton.place(relx=0.4, rely=0.8, relwidth=0.2, relheight=0.1)
+    tree.heading("Course",text="Course",anchor=tk.W)
+    tree.heading("Hours", text="Hours",anchor=tk.W)
+
+    count = 0
+    for i in calculate:
+        tree.insert(parent="", index="end", iid=count, text="", values=(i[0], i[1]))
+        count = count + 1
+
+    tree.place(relx=0.35, rely=0.2)
+
+    #Labels
+    courseLabel = tk.Label(frame, text='Course', bg='#f3e6ff')
+    courseLabel.place(relx=0.12, rely=0.6, relwidth=0.1, relheight=0.05)
+
+    hoursLabel = tk.Label(frame, text='Hours', bg='#f3e6ff')
+    hoursLabel.place(relx=0.5, rely=0.6, relwidth=0.1, relheight=0.05)
+
+    #Entries
+    global courseEntry
+    global hoursEntry
+    courseEntry = tk.Entry(frame)
+    courseEntry.place(relx=0.12, rely=0.65, relwidth=0.4, relheight=0.05)
+
+    hoursEntry = tk.Entry(frame)
+    hoursEntry.place(relx=0.5, rely=0.65, relwidth=0.4, relheight=0.05)
+
+    #Buttons
+    selectButton = tk.Button(frame, text='Select Record to Update', command=selectHour)
+    selectButton.place(relx=0.15, rely=0.8, relwidth=0.35, relheight=0.05)
+
+    updateButton = tk.Button(frame, text='Save Update', command=updateHour)
+    updateButton.place(relx=0.55, rely=0.8, relwidth=0.2, relheight=0.05)
 
     back = tk.Button(frame, text='< Home', bg='#f3e6ff', command=mainScreen)
     back.place(relx=0.01, rely=0.01, relwidth=0.12, relheight=0.05)
+
+def selectHour():
+    #Clear Entry Boxes
+    courseEntry.delete(0, tk.END)
+    hoursEntry.delete(0, tk.END)
+
+    selected = tree.focus()
+    values = tree.item(selected, 'values')
+
+    #Output to Entry Boxes
+    courseEntry.insert(0, values[0])
+    hoursEntry.insert(0, values[1])
+
+def updateHour():
+    selected = tree.focus()
+    tree.item(selected, text='', values=(courseEntry.get(), hoursEntry.get()))
 
 
 def TAAllocations():
@@ -72,19 +122,54 @@ def TAAllocations():
     view = viewHours(selected)
 
     heading = tk.Label(frame, text=menu.get() + ' Courses and Allocated TA Hours', bg='#f3e6ff', font=('Calibri',18))
-    heading.place(relx=0.12, rely=0.2, relwidth=0.8, relheight=0.1)
+    heading.place(relx=0.12, rely=0.1, relwidth=0.8, relheight=0.1)
 
-    results = tk.Label(frame, text=view)
-    results.place(relx=0.1, rely=0.3, relwidth=0.8, relheight=0.45)
+    global tree
+    tree = ttk.Treeview(frame)
+    tree["columns"]=("Course","Hours")
+    tree.column("#0", width=0, stretch=tk.NO)
+    tree.column("Course", width=150, minwidth=150, stretch=tk.NO)
+    tree.column("Hours", width=250, minwidth=270, stretch=tk.NO)
 
-    editButton = tk.Button(frame, text='Edit Hours', command=editHoursInput)
-    editButton.place(relx=0.4, rely=0.8, relwidth=0.2, relheight=0.1)
+    tree.heading("Course",text="Course",anchor=tk.W)
+    tree.heading("Hours", text="Hours",anchor=tk.W)
+
+    count = 0
+    for i in view:
+        tree.insert(parent="", index="end", iid=count, text="", values=(i[0], i[1]))
+        count = count + 1
+
+    tree.place(relx=0.35, rely=0.2)
+
+    #Labels
+    courseLabel = tk.Label(frame, text='Course', bg='#f3e6ff')
+    courseLabel.place(relx=0.12, rely=0.6, relwidth=0.1, relheight=0.05)
+
+    hoursLabel = tk.Label(frame, text='Hours', bg='#f3e6ff')
+    hoursLabel.place(relx=0.5, rely=0.6, relwidth=0.1, relheight=0.05)
+
+    #Entries
+    global courseEntry
+    global hoursEntry
+    courseEntry = tk.Entry(frame)
+    courseEntry.place(relx=0.12, rely=0.65, relwidth=0.4, relheight=0.05)
+
+    hoursEntry = tk.Entry(frame)
+    hoursEntry.place(relx=0.5, rely=0.65, relwidth=0.4, relheight=0.05)
+
+    #Buttons
+    selectButton = tk.Button(frame, text='Select Record to Update', command=selectHour)
+    selectButton.place(relx=0.15, rely=0.8, relwidth=0.35, relheight=0.05)
+
+    updateButton = tk.Button(frame, text='Save Update', command=updateHour)
+    updateButton.place(relx=0.55, rely=0.8, relwidth=0.2, relheight=0.05)
 
     back = tk.Button(frame, text='< Home', bg='#f3e6ff', command=mainScreen)
     back.place(relx=0.01, rely=0.01, relwidth=0.12, relheight=0.05)
 
 
 def editHoursInput():
+
     global screen1
     screen1 = Toplevel(ms)
     screen1.title("Edit TA Hours")
