@@ -1,12 +1,13 @@
 # GUI for Undergraduate Chair
 
 import tkinter as tk
-from tkinter import filedialog, Text
+from tkinter import filedialog, ttk
 from tkinter import*
 from calculateTAHours import calculateHours
-from adjustTAHours import viewHours, viewList, adjustHours
-import pandas as pd
-import os
+from adjustTAHours import viewHours, viewList
+from editTAHours import editTAHours
+from matchTA import matchTA
+
 
 def TAHours():
 
@@ -89,15 +90,15 @@ def editHoursInput():
     screen1.title("Edit TA Hours")
     screen1.geometry("500x300")
 
+    global hours
     hours = StringVar()
-
-    global hoursEntry
 
     label1 = tk.Label(screen1, text = "Which course would you like to edit?")
     label1.place(relx=0.2, rely=0.1, relwidth=0.6, relheight=0.2)
 
     global courses
     courses = []
+    selected = menu.get() + '.csv'
     hoursList = viewList(selected)
     courses.insert(0, 'Select a course')
 
@@ -124,13 +125,102 @@ def editHoursInput():
 
 
 def editHours():
-    result = adjustHours(selected, options.get(), hoursEntry.get())
+    result = editTAHours(selected, options.get(), hours)
     if (not result):
         resultLabel1 = tk.Label(screen1, text='Failed to save.', fg='#cc0000')
         resultLabel1.place(relx=0.2, rely=0.7, relwidth=0.6, relheight=0.1)
     else:
         resultLabel = tk.Label(screen1, text='Changes successfully saved.', fg='#008000')
         resultLabel.place(relx=0.2, rely=0.7, relwidth=0.6, relheight=0.1)
+
+def editAllocations():
+    global frame2
+    frame2 = tk.Frame(ms, bg='#f3e6ff')
+    frame2.place(relx=0.1, rely=0.1, relwidth=0.8, relheight=0.8)
+
+    label1 = tk.Label(frame2, text= 'Match Results', bg='#f3e6ff', font=('Calibri',18))
+    label1.place(relx=0.12, rely=0.2, relwidth=0.8, relheight=0.1)
+
+    global tree
+    tree = ttk.Treeview(frame2)
+    tree["columns"]=("Name","Course")
+    tree.column("#0", width=0, stretch=tk.NO)
+    tree.column("Name", width=150, minwidth=150, stretch=tk.NO)
+    tree.column("Course", width=250, minwidth=270, stretch=tk.NO)
+
+    tree.heading("Name",text="Name",anchor=tk.W)
+    tree.heading("Course", text="Course",anchor=tk.W)
+
+    match = matchTA("sample.csv")
+
+    tree.insert(parent="", index="end", iid=0, text="", values=(match[0][0],match[0][1]))
+    tree.insert(parent="", index="end", iid=1, text="", values=(match[1][0],match[1][1]))
+    tree.insert(parent="", index="end", iid=2, text="", values=(match[2][0],match[2][1]))
+    tree.insert(parent="", index="end", iid=3, text="", values=(match[3][0],match[3][1]))
+
+    global count
+    count = 4
+
+    tree.place(relx=0.3, rely=0.2)
+
+    #Labels
+    nameLabel = tk.Label(frame2, text='Name', bg='#f3e6ff')
+    nameLabel.place(relx=0.12, rely=0.6, relwidth=0.1, relheight=0.05)
+
+    courseLabel = tk.Label(frame2, text='Course', bg='#f3e6ff')
+    courseLabel.place(relx=0.5, rely=0.6, relwidth=0.1, relheight=0.05)
+
+    #Entries
+    global nameEntry
+    global courseEntry
+    nameEntry = tk.Entry(frame2)
+    nameEntry.place(relx=0.12, rely=0.65, relwidth=0.4, relheight=0.05)
+
+    courseEntry = tk.Entry(frame2)
+    courseEntry.place(relx=0.5, rely=0.65, relwidth=0.4, relheight=0.05)
+
+    #Buttons
+    addRecordButton = tk.Button(frame2, text='Add Record', command=addRecords)
+    addRecordButton.place(relx=0.15, rely=0.725, relwidth=0.2, relheight=0.05)
+
+    removeSelected = tk.Button(frame2, text='Remove Selected Record', command=removeRecords)
+    removeSelected.place(relx=0.4, rely=0.725, relwidth=0.35, relheight=0.05)
+
+    selectButton = tk.Button(frame2, text='Select Record to Update', command=selectRecord)
+    selectButton.place(relx=0.15, rely=0.8, relwidth=0.35, relheight=0.05)
+
+    updateButton = tk.Button(frame2, text='Save Update', command=updateRecord)
+    updateButton.place(relx=0.55, rely=0.8, relwidth=0.2, relheight=0.05)
+
+def addRecords():
+    count = 4
+    tree.insert(parent="", index="end", iid=count, text="", values=(nameEntry.get(), courseEntry.get()))
+    count += 1
+
+    #Clear boxes
+    nameEntry.delete(0, tk.END)
+    courseEntry.delete(0, tk.END)
+
+def removeRecords():
+    selectedRecord = tree.selection()
+    for record in selectedRecord:
+        tree.delete(record)
+
+def selectRecord():
+    #Clear Entry Boxes
+    nameEntry.delete(0, tk.END)
+    courseEntry.delete(0, tk.END)
+
+    selected = tree.focus()
+    values = tree.item(selected, 'values')
+
+    #Output to Entry Boxes
+    nameEntry.insert(0, values[0])
+    courseEntry.insert(0, values[1])
+
+def updateRecord():
+    selected = tree.focus()
+    tree.item(selected, text='', values=(nameEntry.get(), courseEntry.get()))
 
 
 def mainScreen():
@@ -150,7 +240,7 @@ def mainScreen():
     TAhours = tk.Button(frame, text="Calculate/Adjust TA Hours", command=TAHours)
     TAhours.place(relx=0.225, rely=0.5, relwidth=0.25, relheight=0.15)
 
-    TAallocations = tk.Button(frame, text="View/Edit TA Allocations")
+    TAallocations = tk.Button(frame, text="View/Edit TA Allocations", command=editAllocations)
     TAallocations.place(relx=0.525, rely=0.5, relwidth=0.25, relheight=0.15)
 
     ms.mainloop()
