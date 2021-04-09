@@ -63,7 +63,8 @@ def update_results():
             df_applicant.insert(6, "Instructor Rank", None)
         for x in range(len(name_list)):
             df_applicant["Instructor Rank"] = np.where((df_applicant['Applicant Name']==name_list[x])&(df_applicant['Course Code']==course_filter), combobox_list[x].get(), df_applicant["Instructor Rank"])
-        df_applicant.to_excel('./sample_output.xlsx', index=False)
+        df_applicant.to_csv('./InstructorRanking.csv', index=False)
+        messagebox.showinfo('Update Success', f'Ranking of Applicants for course {course_choice.get()} is successfully saved')
         
 
 
@@ -169,3 +170,13 @@ def view_applicant_interface():
     results_btn=tk.Button(view_frame, text="Update Ranking", command=update_results)
 
     view_app.mainloop()
+
+view_applicant_interface()
+# output_df = pd.DataFrame(columns=['Name', 'Course', 'Instructor Ranking'])
+# output_df.loc[0] = ['one','two','three']
+# output_df.loc[1] = ['two','two','two']
+# if ((output_df['Name'] == 'three') & (output_df['Course']=='two')).any():
+#     print('True')
+# else:
+#     print('False')
+# print(output_df)

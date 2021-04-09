@@ -14,9 +14,9 @@ def rankApplicants(filename):
     dict = df.to_dict(orient='list')    # converts dataframe to dictionary of lists
 
     # Stores each list in the dictionary based on key
-    name = dict['Name']
-    course = dict['Course']
-    ranking = dict['Ranking']
+    name = dict['Applicant Name']
+    course = dict['Course Code']
+    ranking = dict['Instructor Rank']
 
     listed = []
 
@@ -41,5 +41,4 @@ def rankApplicants(filename):
                     else:
                         c.append((name[sum], 4))
                         sum = sum + 1
-
     return rankedApplicants
