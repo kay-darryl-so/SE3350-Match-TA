@@ -122,7 +122,7 @@ def facultyLogin():
     loginButton.place(relx=0.35, rely=0.6, relwidth=0.3, relheight=0.15)
 
 def verifyInstructor():
-    df = pd.read_csv('loginCredentials.csv')
+    df = pd.read_csv('instructorCredentials.csv')
     dict = df.to_dict(orient='list')
     usernames = dict['Username']
     passwords = dict['Password']
@@ -131,6 +131,8 @@ def verifyInstructor():
         if passwordEntry.get() == passwords[(usernames.index(usernameEntry.get()))]:
             success = tk.Label(screen1, text="Login successful", fg='#008000')
             success.place(relx=0.25, rely=0.8, relwidth=0.5, relheight=0.1)
+            screen1.destroy()
+            m.destroy()
             instructorGUI.mainScreen()
         else:
             fail = tk.Label(screen1, text="Invalid login", fg='#cc0000')
@@ -140,7 +142,7 @@ def verifyInstructor():
         fail.place(relx=0.25, rely=0.8, relwidth=0.5, relheight=0.1)
 
 def verifyChair():
-    df = pd.read_csv('loginCredentials.csv')
+    df = pd.read_csv('chairCredentials.csv')
     dict = df.to_dict(orient='list')
     usernames = dict['Username']
     passwords = dict['Password']
@@ -149,6 +151,8 @@ def verifyChair():
         if passwordEntry.get() == passwords[(usernames.index(usernameEntry.get()))]:
             success = tk.Label(screen1, text="Login successful", fg='#008000')
             success.place(relx=0.25, rely=0.8, relwidth=0.5, relheight=0.1)
+            screen1.destroy()
+            m.destroy()
             chairGUI.mainScreen()
         else:
             fail = tk.Label(screen1, text="Invalid login", fg='#cc0000')
@@ -158,7 +162,7 @@ def verifyChair():
         fail.place(relx=0.25, rely=0.8, relwidth=0.5, relheight=0.1)
 
 def verifyDepartment():
-    df = pd.read_csv('loginCredentials.csv')
+    df = pd.read_csv('departmentCredentials.csv')
     dict = df.to_dict(orient='list')
     usernames = dict['Username']
     passwords = dict['Password']
@@ -167,6 +171,8 @@ def verifyDepartment():
         if passwordEntry.get() == passwords[(usernames.index(usernameEntry.get()))]:
             success = tk.Label(screen1, text="Login successful", fg='#008000')
             success.place(relx=0.25, rely=0.8, relwidth=0.5, relheight=0.1)
+            screen1.destroy()
+            m.destroy()
             departmentGUI.mainScreen()
         else:
             fail = tk.Label(screen1, text="Invalid login", fg='#cc0000')
@@ -176,7 +182,7 @@ def verifyDepartment():
         fail.place(relx=0.25, rely=0.8, relwidth=0.5, relheight=0.1)
 
 def verifyFaculty():
-    df = pd.read_csv('loginCredentials.csv')
+    df = pd.read_csv('facultyCredentials.csv')
     dict = df.to_dict(orient='list')
     usernames = dict['Username']
     passwords = dict['Password']
@@ -185,6 +191,8 @@ def verifyFaculty():
         if passwordEntry.get() == passwords[(usernames.index(usernameEntry.get()))]:
             success = tk.Label(screen1, text="Login successful", fg='#008000')
             success.place(relx=0.25, rely=0.8, relwidth=0.5, relheight=0.1)
+            screen1.destroy()
+            m.destroy()
             facultyGUI.mainScreen()
         else:
             fail = tk.Label(screen1, text="Invalid login", fg='#cc0000')
