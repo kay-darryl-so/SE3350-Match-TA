@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog, Text
 from tkinter import*
+from rank_applicants import *
 
 #def rankApplicants():
 
@@ -21,7 +22,7 @@ def mainScreen():
     label = tk.Label(frame, text="Select a function", bg='#f3e6ff', font=('Calibri',18))
     label.place(relx=0.25, rely=0.3, relwidth=0.5, relheight=0.1)
 
-    RankApplicants = tk.Button(frame, text="Rank Applicants")
+    RankApplicants = tk.Button(frame, text="Rank Applicants", command=view_applicant_interface)
     RankApplicants.place(relx=0.225, rely=0.5, relwidth=0.25, relheight=0.15)
 
     TAallocations = tk.Button(frame, text="View TA Allocations")
