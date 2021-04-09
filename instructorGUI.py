@@ -98,7 +98,7 @@ def mainScreen():
     RankApplicants = tk.Button(frame, text="Rank Applicants", command=view_applicant_interface)
     RankApplicants.place(relx=0.225, rely=0.5, relwidth=0.25, relheight=0.15)
 
-    TAallocations = tk.Button(frame, text="View TA Allocations"=viewTAAllocations)
+    TAallocations = tk.Button(frame, text="View TA Allocations", command=viewTAAllocations)
     TAallocations.place(relx=0.525, rely=0.5, relwidth=0.25, relheight=0.15)
 
     ms.mainloop()
