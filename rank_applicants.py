@@ -141,13 +141,13 @@ def select_course(fileName = None):
 def view_applicant_interface():
     view_app = tk.Tk()
     view_app.title('TA-Course Matching System')
-    view_app.geometry('1000x900')
+    view_app.geometry('1000x1000')
 
     view_canvas = tk.Canvas(view_app, bg="#ffffff")
-    view_canvas.pack(fill='both', expand='yes')
+    view_canvas.pack(fill='both', expand='yes')    
 
     view_frame = tk.Frame(view_canvas, bg='#f3e6ff')
-    view_frame.pack(fill='both', expand='yes', padx = 80, pady=80)
+    view_frame.pack(fill='both', expand='yes')
 
     global choose_course_frame
     choose_course_frame = tk.Frame(view_frame, bg='#f3e6ff')
@@ -172,6 +172,8 @@ def view_applicant_interface():
     x_scrollbar.pack(side='bottom', fill='x')
     data_tree.configure(xscrollcommand=x_scrollbar.set)
 
+    
+
     global rank_frame
     rank_frame=tk.Frame(view_frame, bg='#f3e6ff')
     rank_frame.pack(side='top', padx=10, pady=10)
@@ -183,3 +185,5 @@ def view_applicant_interface():
     select_applicant_file('SampleApplicantInput_updated.xlsx')
 
     view_app.mainloop()
+
+view_applicant_interface()
